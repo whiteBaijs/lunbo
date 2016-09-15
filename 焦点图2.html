@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>焦点图2</title>
+	<style type="text/css">
+		*{margin:0;padding:0}
+		img{display:block;}
+		ul,ol{list-style:none}
+		.slider2{width:520px;height:201px;margin:100px auto;position:relative; overflow:hidden;}
+		.slider2 ul{width:1000%;height:201px;position:absolute;left:-100%;top:0;}
+		.slider2 ul li{float:left; width:10%;height:201px; cursor:pointer;}
+
+		.slider2 ol{width:84px;height:14px;position:absolute;left:50%;bottom:14px;margin-left:-35px;background-color:rgba(255,255,255, 0.3);border-radius:5px;}
+		.slider2 ol li{width:10px;height:10px;margin:2px;background:#ccc;float:left;border-radius:50%;cursor:pointer;}
+		.slider2 ol li.on{background:#f40;}
+
+		.slider2 span{width:20px;height:30px;line-height:30px;text-align:center;opacity:0.5;font-size:18px;color:white;position:absolute;left:0;top:50%;margin-top:-10px;background:black;cursor:pointer;}
+		.slider2 .btn-right{right:0;left:auto;}
+	</style>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var $btn_left		= $('.btn-left');
+		var $btn_right		= $('.btn-right');
+		var index = 0;
+		var $slider1_ul		= $('.slider2 ul');
+		var $slider1_ul_li	= $('.slider2 ul li');
+		var $slider1_ol		= $('.slider2 ol');
+		var $slider1_ol_li	= $('.slider2 ol li');
+		var timer;
+		//右边按钮点击事件
+		 $btn_right.click(function(){
+			
+			if (index < $slider1_ol_li.length-1){
+				index++;
+				//图标事件
+				$slider1_ol_li.eq(index).addClass('on').siblings().removeClass('on');
+				//图片事件
+				$slider1_ul.animate({'left':'-'+(index+1)+'00%'},500);
+				// var i_index =$slider1_ol_li.index();
+				//导航数字变化事件
+				$('.slider2-top strong i').html(index+1);
+			}else {
+				//图标事件
+				$slider1_ol_li.eq(0).addClass('on').siblings().removeClass('on');
+				//图片事件
+				index++;
+				$slider1_ul.animate({'left':'-'+(index+1)+'00%'},500,'swing',function(){
+					$(this).css('left','-100%');
+					index=0;
+					//导航数字变化事件
+					$('.slider2-top strong i').html(index+1);
+					
+
+				});
+			}
+		 })
+		 //左边按钮点击事件
+		$btn_left.click(function(){
+			if (index > 0){
+				index--;
+				//图标事件
+				$slider1_ol_li.eq(index).addClass('on').siblings().removeClass('on');
+				//图片事件
+				$slider1_ul.animate({'left':'-'+(index+1)+'00%'},500)
+				//导航数字变化事件
+				$('.slider2-top strong i').html(index+1);
+			} else{
+				//图标事件
+				$slider1_ol_li.eq($slider1_ol_li.length-1).addClass('on').siblings().removeClass('on');
+				//图片工作
+				index--;
+				$slider1_ul.animate({'left':'-'+(index+1)+'00%'},500,'swing',function(){
+					$slider1_ul.css('left','-600%');
+					index = $slider1_ol_li.length-1;
+					//导航数字变化事件
+					$('.slider2-top strong i').html(index+1);
+					
+				})	
+			}
+		})
+		//图标悬停事件
+		$slider1_ol_li.mouseenter(function(){
+			index = $(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			$slider1_ul.animate({'left':'-'+(index+1)+'00%'},500);
+				//导航数字变化事件
+				$('.slider2-top strong i').html(index+1);
+				
+		})
+
+		//图片自动播放
+		clearInterval(timer);
+		timer = setInterval(function(){
+			 $btn_right.click();
+		},3000)
+		//鼠标悬停时阻止播放
+		$('.slider2').mouseenter(function(){
+			clearInterval(timer);
+		}).mouseleave(function(){
+			clearInterval(timer);
+			timer = setInterval(function(){
+				 $btn_right.click();
+			},3000)
+		})
+		//数字变化获取需要各自放到各自的变化函数中获取相应的html的数字		
+					
+	})
+	</script>
+</head>
+<body>
+	<div class="slider2-top">
+		<span>天猫必逛</span>
+		<em>热门品牌,天天上天猫!</em>
+		<strong><i>1</i>/6</strong>
+	</div>
+	<div class="slider2">
+		<ul>
+			<li><img src="images/focus2/6.jpg" alt="" /></li>
+			<li><img src="images/focus2/1.jpg" alt="" /></li>
+			<li><img src="images/focus2/2.jpg" alt="" /></li>
+			<li><img src="images/focus2/3.jpg" alt="" /></li>
+			<li><img src="images/focus2/4.jpg" alt="" /></li>
+			<li><img src="images/focus2/5.jpg" alt="" /></li>
+			<li><img src="images/focus2/6.jpg" alt="" /></li>
+			<li><img src="images/focus2/1.jpg" alt="" /></li>
+		</ul>
+
+		<ol>
+			<li class="on"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ol>
+		<span class="btn-left">&lt;</span>
+		<span class="btn-right">&gt;</span>
+	</div>
+</body>
+</html>

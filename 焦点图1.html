@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>焦点图1</title>
+	<style type="text/css">
+	*{margin:0;padding:0}
+	img{display:block;}
+	ul,ol{list-style:none}
+	.slider1{width:520px;height:280px;margin:100px auto;position:relative; overflow:hidden;}
+	.slider1 ul{width:1000%;height:280px;position:absolute;left:-100%;top:0;}
+	.slider1 ul li{float:left; width:10%;height:280px; cursor:pointer;}
+
+	.slider1 ol{width:70px;height:14px;position:absolute;left:50%;bottom:14px;margin-left:-35px;background-color:rgba(255,255,255, 0.3);border-radius:5px;}
+	.slider1 ol li{width:10px;height:10px;margin:2px;background:#ccc;float:left;border-radius:50%;cursor:pointer;}
+	.slider1 ol li.on{background:#f40;}
+
+	.slider1 span{width:20px;height:30px;line-height:30px;text-align:center;opacity:0.5;font-size:18px;color:white;position:absolute;left:0;top:50%;margin-top:-10px;background:black;cursor:pointer;}
+	.slider1 .btn-right{right:0;left:auto;}
+	</style>
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		var $btn_left		= $('.btn-left');
+		var $btn_right		= $('.btn-right');
+		var index = 0;
+		var $slider1_ul		= $('.slider1 ul');
+		var $slider1_ul_li	= $('.slider1 ul li');
+		var $slider1_ol		= $('.slider1 ol');
+		var $slider1_ol_li	= $('.slider1 ol li');
+		var timer;
+		//右边按钮事件
+		$btn_right.click(function(){			
+			if (index < $slider1_ol_li.length-1){
+				index++;
+				//角标工作
+				$slider1_ol_li.eq(index).addClass('on').siblings().removeClass('on');
+				//图片工作
+				$slider1_ul.animate({left:"-"+(index+1)+"00%"},500);
+			} else{//如果到达最后一张图片
+				// 角标工作
+				$slider1_ol_li.eq(0).addClass('on').siblings().removeClass('on');
+				//图片工作
+				index++;
+				$slider1_ul.animate({left:"-"+(index+1)+"00%"},500,'swing',function(){
+					$slider1_ul.css('left',"-100%");
+					index = 0;
+				})
+			}
+		
+		})
+		//左边按钮事件
+		$btn_left.click(function(){			
+			if (index > 0){
+				index--;
+				//角标工作
+				$slider1_ol_li.eq(index).addClass('on').siblings().removeClass('on');
+				//图片工作
+				$slider1_ul.animate({left:"-"+(index+1)+"00%"},500)
+			} else{//如果到达最后一张图片
+				// 角标工作
+				$slider1_ol_li.eq($slider1_ol_li.length-1).addClass('on').siblings().removeClass('on');
+				//图片工作
+				index--;
+				$slider1_ul.animate({left:"-"+(index+1)+"00%"},500,'swing',function(){
+					$slider1_ul.css('left',"-500%");
+					index = $slider1_ol_li.length-1;
+				})
+			}			
+		})
+
+		//下标小圆扭鼠标悬停事件
+		$slider1_ol_li.mouseenter(function(){
+			index = $(this).index();
+			$(this).addClass('on').siblings().removeClass('on');
+			$slider1_ul.animate({left:"-"+(index+1)+"00%"},500);
+		})
+		//自动轮播事件
+		clearInterval(timer);
+		timer = setInterval(function(){
+			$btn_right.click();
+		},3000)
+		//鼠标在div上悬停使之停止运动事件
+		$('.slider1').mouseenter(function(){
+			clearInterval(timer);
+		}).mouseleave(function(){
+			clearInterval(timer);
+			timer = setInterval(function(){
+				$btn_right.click();
+			},3000)
+			})
+	})
+	</script>
+</head>
+<body>
+	<div class="slider1">
+		<ul>
+			<li><img src="images/focus1/5.jpg" alt="" /></li>
+			<li><img src="images/focus1/1.jpg" alt="" /></li>
+			<li><img src="images/focus1/2.jpg" alt="" /></li>
+			<li><img src="images/focus1/3.jpg" alt="" /></li>
+			<li><img src="images/focus1/4.jpg" alt="" /></li>
+			<li><img src="images/focus1/5.jpg" alt="" /></li>
+			<li><img src="images/focus1/1.jpg" alt="" /></li>
+		</ul>
+
+		<ol>
+			<li class="on"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ol>
+		<span class="btn-left">&lt;</span>
+		<span class="btn-right">&gt;</span>
+	</div>
+</body>
+</html>
